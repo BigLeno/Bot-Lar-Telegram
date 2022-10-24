@@ -6,9 +6,12 @@ import requests
 import os
 import json
 
+#Se for usar uma VM, tenha certeza que ela aceita o Switch case
+#Para ter certeza, ten que usar if, elif e else
+
 #Caminho do diretório que estão os arquivos
-caminho = ''
-nomeBOT = ""
+caminho = '/diretorio/do/BOT/'
+nomeBOT = '@nomeBOT'
 
 def abredicesar ():
     """Função que abre o configuracoes.json"""
@@ -18,7 +21,7 @@ def abredicesar ():
     return data
 
 def Token ():
-	"""Função que abre o Token.json"""
+	"""Função que abre o token.json"""
 	tk_config = open(f'{caminho}token.json')
 
 	tk_cf = json.load(tk_config)
@@ -75,22 +78,21 @@ def achaeshow (nome):
     show = []
     with open(f'{caminho}configuracoes.json', 'r', encoding='utf-8') as arquivo:  #Abre o arquivo em modo leitura "Read"#
         data = json.load(arquivo)
-        
-        match nome:
-            case "admin":
-                for i in data["Administradores"]:
-                    show.append(i['usuario'])
-            case "prof":
-                for i in data["Profs"]:
-                    show.append(i['usuario'])
-            case "bolsistas":
-                for i in data["Bolsistas"]:
-                    show.append(i['usuario'])
-            case "integrantes":
-                for i in data["Integrantes"]:
-                    show.append(i['usuario'])
-            case _:
-                print("Não existe isso para ser mostrado!")
+
+        if nome == "admin":
+            for i in data["Administradores"]:
+                show.append(i['usuario'])
+        elif nome == "prof":
+            for i in data["Profs"]:
+                show.append(i['usuario'])
+        elif nome == "bolsistas":
+            for i in data["Bolsistas"]:
+                show.append(i['usuario'])
+        elif nome == "integrantes":
+            for i in data["Integrantes"]:
+                show.append(i['usuario'])
+        else:
+            print("Não existe isso para ser mostrado!")
             
         return show
 
@@ -111,37 +113,51 @@ async def mensagem(message: types.Message):
                '/horarios', '/bolsistas', '/ultima', '/pessoas', sep='\n')
     await message.reply(mensagem, parse_mode=ParseMode.MARKDOWN)
 
-@dp.message_handler(commands=["pessoas", "pessoas_Administradores", "pessoas_Professores", "pessoas_Bolsistas", "pessoas_Integrantes", "bolsistas"])
+#funções secretas do bot
+
+@dp.message_handler(commands=["ovo"])
+async def mensagem(message: types.Message):
+		await message.reply('te reiar COVIDado!')
+
+@dp.message_handler(commands=["livia"])
+async def mensagem(message: types.Message):
+		await message.reply('Expulso do laboratório!')
+
+# até agora, são estas
+
+@dp.message_handler(commands=["pessoas", "criadores", "professores", "integrantes", "bolsistas"])
 async def mensagem(message: types.Message):
     comando = (message.text).strip()
 
-    if comando == "/pessoas":
-        await message.reply(f"Escolha o que deseja listar:\n/pessoas_Administradores\n/pessoas_Professores\n/pessoas_Bolsistas\n/pessoas_Integrantes")
-    else:
+    if comando == "/pessoas" or comando == "/pessoas@LAR_UFRN_bot":
+        await message.reply(f"Escolha o que deseja listar:\n/criadores\n/professores\n/bolsistas\n/integrantes")
+    else:   
         comandoFormatado = (comando.replace("/", " ")).strip()
         comandoFormatado = (comandoFormatado.replace(nomeBOT, " ")).strip()
-        lista = ''
-        match comandoFormatado:
-            case "pessoas_Administradores":
-                comandoFormatado = "administradores"
-                listar = perfil[:]
-            case "pessoas_Professores":
-                comandoFormatado = "prof"
-                listar = achaeshow(comandoFormatado)
-            case "pessoas_Bolsistas" | "bolsistas":
-                comandoFormatado = "bolsistas"
-                listar = achaeshow(comandoFormatado)
-                chatIDpessoa=message.chat.id
-                msg = "Horário dos bolsistas"
-                img = open(f"{caminho}horarioBolsista.png", 'rb')
-                telegram_msg = requests.get(f'https://api.telegram.org/bot{token}/sendPhoto?chat_id={chatIDpessoa}&caption={msg}', files={'photo': img})
-            case "pessoas_Integrantes":
-                comandoFormatado = "integrantes"
-                listar = achaeshow(comandoFormatado)
-            case _:
-                await message.reply("Não existe isso para ser mostrado!")
+        lista = '' 
+        listar = []
+        if comandoFormatado == "criadores":
+            comandoFormatado = "administradores"
+            listar = perfil[:]
+        elif comandoFormatado == "professores":
+            comandoFormatado = "prof"
+            listar = achaeshow(comandoFormatado)
+        elif  comandoFormatado == "bolsistas":
+            comandoFormatado = "bolsistas"
+            listar = achaeshow(comandoFormatado)
+            chatIDpessoa=message.chat.id
+            msg = "Horário dos bolsistas"
+            img = open(f"{caminho}horarioBolsista.png", 'rb')
+            telegram_msg = requests.get(f'https://api.telegram.org/bot{token}/sendPhoto?chat_id={chatIDpessoa}&caption={msg}', files={'photo': img})
+        elif comandoFormatado == "integrantes":
+            comandoFormatado = "integrantes"
+            listar = achaeshow(comandoFormatado)
+        else:
+            await message.reply("Não existe esta categoria para ser mostrado!")
+
+            
         for i in listar:
-            lista = (lista + i +"\n")
+            lista = (lista + "@" + i +"\n")
         await message.reply(f'{lista.strip()}')
 
 
@@ -152,13 +168,10 @@ async def mensagem(message: types.Message):
     img = open(f"{caminho}horarioBolsista.png", 'rb')
     telegram_msg = requests.get(f'https://api.telegram.org/bot{token}/sendPhoto?chat_id={chatIDpessoa}&caption={msg}', files={'photo': img})
 
-
-
 @dp.message_handler(lambda message: message.from_user.username not in perfil)
 async def mensagem(message: types.Message):
-
-		await message.reply('Sem permissão')
-		await message.answer('Este é um bot em desenvolvimento do Laboratório de Automação e robótica. Se tiver interesse de interagir comigo, entre em contato com o laboratório!')
+	await message.reply('Sem permissão')
+	await message.answer('Este é um bot em desenvolvimento do Laboratório de Automação e robótica. Se tiver interesse de interagir comigo, entre em contato com o laboratório!')
 
 
 @dp.message_handler(lambda message: message.from_user.username in perfil, commands=["ultima"])
@@ -166,7 +179,6 @@ async def mensagem(message: types.Message):
 	ultima = abreultima()
 	for i in ultima["ultima"]:
 		await message.reply(i)
-
 
 @dp.message_handler(lambda message: message.from_user.username in perfil, commands=["foto"])
 async def mensagem(message: types.Message):
@@ -179,23 +191,25 @@ async def mensagem(message: types.Message):
 @dp.message_handler(lambda message: message.from_user.username in perfil, commands=["add"])
 async def mensagem(message: types.Message):
     comando = (message.text).strip()
-    if comando == "/add":
+    
+    if comando == "/add" or comando == "/add@LAR_UFRN_bot":
         await message.reply(f"Escreva após /add o nome do usuário do telegram que deseja adicionar.")
     else:
         data = abredicesar()
         comandoFormatado = (comando.replace("/add", " ")).strip()
         adiciona(data, comandoFormatado)
-        await message.reply(f"O usuario '{comandoFormatado}' foi adicionado com sucesso!")
+        await message.reply(f"O usuario @'{comandoFormatado}' foi adicionado com sucesso!")
 
 @dp.message_handler(lambda message: message.from_user.username in perfil, commands=["remove"])
 async def mensagem(message: types.Message):
     comando = (message.text).strip()
-    if comando == "/remove":
+    
+    if comando == "/remove" or comando == "/remove@LAR_UFRN_bot":
         await message.reply(f"Escreva após /remove o nome do usuário do telegram que deseja remover.")
     else:
         data = abredicesar()
         comandoFormatado = (comando.replace("/remove", " ")).strip()
         remove(data, comandoFormatado)
-        await message.reply(f"O usuario '{comandoFormatado}' foi removido com sucesso!")
+        await message.reply(f"O usuario @'{comandoFormatado}' foi removido com sucesso!")
 
 executor.start_polling(dp)

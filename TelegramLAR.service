@@ -1,0 +1,17 @@
+[Unit]
+
+Description=Inicia a conexao mqtt ao bot do telegram
+
+#Documentation=https://www.kernel.org/
+Wants=network.target
+After=networking.service
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+#Inicia a conexao mqtt ao bot do telegram
+ExecStart=bash /diretorio/do/BOT/startupLAR.sh
+
+[Install]
+
+WantedBy=multi-user.target

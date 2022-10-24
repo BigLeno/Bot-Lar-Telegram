@@ -1,0 +1,6 @@
+{
+    "broker" : "ip",
+    "porta" : porta,
+    "chatid" : "id do grupo",
+    "cliente" : "mqtt_BOT"
+}
