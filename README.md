@@ -1,12 +1,12 @@
 <h1 align="left">
-    <a href="https://pt-br.reactjs.org/">BoT_Backup</a>
+    <a href="https://github.com/BigLeno/BoT_Backup">BoT_Backup</a>
 
 </h1>
 <p align="left"> </p>
 
 
 <h1 align="left">
-    <a href="https://pt-br.reactjs.org/">Descrição do Projeto</a>
+    <a href="https://github.com/BigLeno/BoT_Backup">Descrição do Projeto</a>
 </h1>
 <p align="left">Desenvolver um script que será capaz de gerenciar todas as comunicações via MQTT do Laboratório de Automação e Robótica (LAR) 
 localizado na Universidade Federal do Rio Grande do Norte (UFRN) </p>
@@ -24,7 +24,7 @@ localizado na Universidade Federal do Rio Grande do Norte (UFRN) </p>
 - [MQTT](https://pypi.org/project/paho-mqtt/)
 
 <h1 align="left">
-    <a href="https://pt-br.reactjs.org/">O que ele já faz? </a>
+    <a href="https://github.com/BigLeno/BoT_Backup">O que ele já faz? </a>
 </h1>
 <p align="left"> O bot já é capaz de alterar os arquivos .json respectivos, de certa forma a executar o que conhecemos como CRUD, ou melhor dizendo,
 Create, Read, Update, Delete alguns itens específicos que desejamos.</p>
@@ -39,7 +39,7 @@ Create, Read, Update, Delete alguns itens específicos que desejamos.</p>
 
 
 <h1 align="left">
-    <a href="https://pt-br.reactjs.org/">Status do Projeto</a>
+    <a href="https://github.com/BigLeno/BoT_Backup">Status do Projeto</a>
 </h1>
 
 <h4 align="left"> 
@@ -47,7 +47,7 @@ Create, Read, Update, Delete alguns itens específicos que desejamos.</p>
 </h4>
 
 <h1 align="left">
-    <a href="https://pt-br.reactjs.org/">Autores</a>
+    <a href="https://github.com/BigLeno/BoT_Backup">Autores</a>
 </h1>
 </h1>
 <p align="left"> Responsáveis pelo projeto </p>
