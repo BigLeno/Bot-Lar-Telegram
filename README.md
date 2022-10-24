@@ -17,6 +17,7 @@ localizado na Universidade Federal do Rio Grande do Norte (UFRN) </p>
 - [Json](https://www.json.org/json-en.html)
 - [Shell Script](https://www.devmedia.com.br/introducao-ao-shell-script-no-linux/25778)
 - [Aiogram](https://docs.aiogram.dev/en/latest/)
+- [MQTT](https://pypi.org/project/paho-mqtt/)
 
 <h1 align="left">
     <a href="https://pt-br.reactjs.org/">O que ele já faz? </a>
